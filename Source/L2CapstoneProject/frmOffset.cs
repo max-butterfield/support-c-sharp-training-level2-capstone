@@ -5,6 +5,8 @@ namespace L2CapstoneProject
 {
     public partial class frmOffset : Form
     {
+        public PhaseAmplitudeOffset offset;
+
         public enum Mode { Add, Edit }
 
         public Mode ViewMode { get; }
@@ -26,6 +28,14 @@ namespace L2CapstoneProject
         }
 
         private void btnOk_Click(object sender, EventArgs e)
+        {
+            offset.AmplitudeOffset = decimal.ToDouble(this.numAmp.Value);
+            offset.PhaseOffset = decimal.ToDouble(this.numPhase.Value);
+
+            Close();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
         }

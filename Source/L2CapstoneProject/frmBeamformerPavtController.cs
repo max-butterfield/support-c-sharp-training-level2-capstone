@@ -124,7 +124,15 @@ namespace L2CapstoneProject
 
             if (r == DialogResult.OK)
             {
+                PhaseAmplitudeOffset offset = dialog.offset;
+                string[] strValues = new string[2];
+
+                strValues[0] = offset.AmplitudeOffset.ToString();
+                strValues[1] = offset.PhaseOffset.ToString();
+
                 // Add the offset to the listview
+                ListViewItem newItem = new ListViewItem(strValues);
+                lsvOffsets.Items.Add(newItem);
             }
         }
         private void EditOffset(int selected)
@@ -136,7 +144,17 @@ namespace L2CapstoneProject
 
             if (r == DialogResult.OK)
             {
-                // Edit the offset shown in the listview
+                RemoveOffset(selected);
+
+                PhaseAmplitudeOffset offset = dialog.offset;
+                string[] strValues = new string[2];
+
+                strValues[0] = offset.AmplitudeOffset.ToString();
+                strValues[1] = offset.PhaseOffset.ToString();
+
+                // Edit the offset to the listview
+                ListViewItem newItem = new ListViewItem(strValues);
+                lsvOffsets.Items.Insert(selected, newItem);
             }
         }
 
