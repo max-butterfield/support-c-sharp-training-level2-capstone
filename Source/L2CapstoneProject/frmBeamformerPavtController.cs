@@ -127,8 +127,8 @@ namespace L2CapstoneProject
                 PhaseAmplitudeOffset offset = dialog.offset;
                 string[] strValues = new string[2];
 
-                strValues[0] = offset.AmplitudeOffset.ToString();
-                strValues[1] = offset.PhaseOffset.ToString();
+                strValues[0] = offset.PhaseOffset.ToString();
+                strValues[1] = offset.AmplitudeOffset.ToString();
 
                 // Add the offset to the listview
                 ListViewItem newItem = new ListViewItem(strValues);
@@ -149,8 +149,8 @@ namespace L2CapstoneProject
                 PhaseAmplitudeOffset offset = dialog.offset;
                 string[] strValues = new string[2];
 
-                strValues[0] = offset.AmplitudeOffset.ToString();
-                strValues[1] = offset.PhaseOffset.ToString();
+                strValues[0] = offset.PhaseOffset.ToString();
+                strValues[1] = offset.AmplitudeOffset.ToString();
 
                 // Edit the offset to the listview
                 ListViewItem newItem = new ListViewItem(strValues);
