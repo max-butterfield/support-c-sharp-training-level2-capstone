@@ -8,7 +8,7 @@ namespace L2CapstoneProject
 {
     public interface IBeamformer
     {
-        void Connect();
+        void Connect(string resourceInput, double frequencyInput, double powerInput);
 
         void Disconnect();
     }
