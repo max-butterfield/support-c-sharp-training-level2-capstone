@@ -11,6 +11,8 @@ namespace L2CapstoneProject
     {
         private NIRfsg _rfsgSession;
 
+        private bool generating = false;
+
         //PhaseAmplitudeOffset offset;
 
         public SteppedBeamformer()//needs a resource name and other values/info from controller form
@@ -44,14 +46,30 @@ namespace L2CapstoneProject
                 _rfsgSession.Close();
             }
             _rfsgSession = null;
+            generating = false;
         }
 
         void WriteOffset(PhaseAmplitudeOffset offsetInput)
         {
             //write PhaseAmplitudeOffset to registers on the device
-
+            
+            if (generating)
+            {
+                _rfsgSession.Abort();
+            }
             _rfsgSession.RF.PhaseOffset = offsetInput.PhaseOffset;
             _rfsgSession.RF.PowerLevel += offsetInput.AmplitudeOffset;
+
+            if (generating)
+            {
+                _rfsgSession.Initiate();
+            }
+        }
+
+        void StimulateDut()
+        {
+            _rfsgSession.Initiate();
+            generating = true;
         }
     }
 }
