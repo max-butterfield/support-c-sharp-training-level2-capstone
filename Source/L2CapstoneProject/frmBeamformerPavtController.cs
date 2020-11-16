@@ -186,5 +186,10 @@ namespace L2CapstoneProject
         }
 
         #endregion
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
