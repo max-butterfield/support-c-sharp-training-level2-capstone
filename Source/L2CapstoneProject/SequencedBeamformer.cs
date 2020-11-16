@@ -22,6 +22,8 @@ namespace L2CapstoneProject
         double _bbPeriod;
         int _bbSamples;
 
+        bool _active;
+
         public SequencedBeamformer()
         {
             //needs an initial offset list?
@@ -32,9 +34,11 @@ namespace L2CapstoneProject
             _externalAttenuation = 0.0; // dB
             _refClockFreq = 10.0e6; // MHz
             _ports = "";
+            _active = false;
 
+            //set baseband settings
             _bbRate = 10.0e6;
-            _bbPeriod = 100.0e-6;
+            _bbPeriod = 10.0e-6;
             _bbSamples = (int)Math.Round(_bbRate * _bbPeriod);
         }
 
@@ -66,10 +70,9 @@ namespace L2CapstoneProject
 
             //power off
 
-            if (_rfsgSession != null)
+            if (_active && _rfsgSession != null)
             {
-                _rfsgSession.RF.OutputEnabled = false;
-                _rfsgSession.Close();
+                AbortSequence();
                 _rfsgSession = null;
             }
         }
@@ -107,14 +110,24 @@ namespace L2CapstoneProject
             }
         }
 
-        void InitiateSequence()
+        void InitiateSequence(string name)
         {
-
+            if (!_active)
+            {
+                _rfsgSession.Arb.SelectedWaveform = name;
+                _rfsgSession.Initiate();
+                _active = true;
+            }
         }
 
         void AbortSequence()
         {
-
+            if(_active)
+            {
+                _rfsgSession.RF.OutputEnabled = false;
+                _rfsgSession.Abort();
+                _active = false;
+            }
         }
 
         private void GenerateIQTone(ref double[] iData, ref double[] qData, double bbRate, double bbPeriod, 
@@ -126,8 +139,8 @@ namespace L2CapstoneProject
 
             for (int i = 0; i < iqSamples; i++)
             {
-                iData[i] = ampitudeOffset * Math.Sin((2 * Math.PI * i * toneFreq) / _bbRate + Math.PI * phaseDegrees / 180);
-                qData[i] = ampitudeOffset * Math.Sin((2 * Math.PI * i * toneFreq) / _bbRate - Math.PI * phase90Degrees / 180);
+                iData[i] = ampitudeOffset * Math.Sin((2 * Math.PI * i * toneFreq) / bbRate + Math.PI * phaseDegrees / 180);
+                qData[i] = ampitudeOffset * Math.Sin((2 * Math.PI * i * toneFreq) / bbRate - Math.PI * phase90Degrees / 180);
             }
         }
     }
